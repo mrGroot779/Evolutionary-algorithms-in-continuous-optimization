@@ -1,0 +1,45 @@
+from deev import DE
+import numpy as np
+
+
+class Problem(object):
+    def __init__(self, dim, lb, up, *arg1, **arg2):
+        """
+        initialize attributes of the problem
+        :argument
+            D : Dimension
+            lb : lower bound
+            ub : upper bound
+        """
+        self.D = dim
+        self.lb = lb
+        self.ub = up
+
+    def evaluate(self, x):
+        """
+        define the evaluate methods
+        :argument
+            x : input
+        """
+        pass
+
+class Sphere(Problem):
+
+    def __init__(self, dim, lb, ub):
+        super().__init__(dim, lb, ub)
+
+    def evaluate(self, x):
+        x = self.lb + x * (self.ub - self.lb)
+        re = sum(np.power(x[i], 2) for i in range(self.D))
+        return re
+
+
+TaskProb = Sphere(50, -50, 50)
+Task = DE(TaskProb, 1000)
+Task.run()
+
+print('cmaes from here')
+from cmaes import CMAES
+
+task = CMAES(TaskProb,1000)
+task.run()
